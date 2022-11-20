@@ -47,7 +47,6 @@ class SimilarityClassification(object):
     def predict_smiles_pair(self, smiles_pair):
         # Make predictions with the model
         prediction, raw_outputs = self.model.predict([smiles_pair])
-        # prediction, raw_outputs = self.model.predict(smiles_pair)
         # print(prediction, raw_outputs)
         return prediction, raw_outputs
 

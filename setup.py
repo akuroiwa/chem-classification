@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='chem_classification',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/akuroiwa/chem-classification',
     # # PyPI url
     # download_url='',
@@ -22,11 +22,10 @@ setup(
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        'Intended Audience :: Education',
+        'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
-        "Operating System :: OS Independent",
+        'Intended Audience :: Education',
+        'Operating System :: OS Independent',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python :: 3 :: Only',
         # 'Programming Language :: Python :: 3.8',
@@ -35,7 +34,7 @@ setup(
         'Topic :: Software Development',
         'Topic :: Scientific/Engineering :: Chemistry',
         'Topic :: Scientific/Engineering :: Medical Science Apps.',
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     platforms='any',
     keywords=['classification', 'transformer', 'roberta', 'cheminformatics', 'chemoinformatics'],
