@@ -9,11 +9,12 @@ transformers_logger.setLevel(logging.WARNING)
 
 class SimilarityClassification(object):
 
-    def __init__(self):
+    def __init__(self, output_dir='chem-outputs/'):
 
         # Optional model configuration
         self.model_args = ClassificationArgs(num_train_epochs=1)
         # self.model_args.reprocess_input_data = True
+        self.model_args.output_dir = output_dir
         self.model_args.overwrite_output_dir = True
         # self.model_args.use_cached_eval_features = True
         # self.model_args.silent = True
@@ -22,16 +23,29 @@ class SimilarityClassification(object):
         self.cuda_available = torch.cuda.is_available()
 
         # Create a ClassificationModel
-        self.model = ClassificationModel(
-            "roberta",
-            "roberta-base",
-        # self.model = ClassificationModel(
-        #     'bert',
-        #     'bert-base-cased',
-            num_labels=3,
-            args=self.model_args,
-            use_cuda=self.cuda_available
-        )
+        if os.path.exists(os.path.join(output_dir, "pytorch_model.bin")):
+            self.model = ClassificationModel(
+                # "roberta",
+                'electra',
+                output_dir,
+                num_labels=3,
+                args=self.model_args,
+                use_cuda=self.cuda_available
+            )
+        else:
+            self.model = ClassificationModel(
+                # "roberta",
+                # "roberta-base",
+                'electra',
+                'google/electra-small-discriminator',
+                # 'google/electra-base-discriminator',
+            # self.model = ClassificationModel(
+            #     'bert',
+            #     'bert-base-cased',
+                num_labels=3,
+                args=self.model_args,
+                use_cuda=self.cuda_available
+            )
 
     def train_and_eval(self, train_json, eval_json):
         train_df = pd.read_json(train_json)
@@ -53,11 +67,12 @@ class SimilarityClassification(object):
 
 class SimilarityRegression(SimilarityClassification):
 
-    def __init__(self):
+    def __init__(self, output_dir='chem-reg-outputs/'):
 
         # Optional model configuration
         self.model_args = ClassificationArgs(num_train_epochs=1)
         # self.model_args.reprocess_input_data = True
+        self.model_args.output_dir = output_dir
         self.model_args.overwrite_output_dir = True
         # self.model_args.use_cached_eval_features = True
         # self.model_args.silent = True
@@ -67,13 +82,25 @@ class SimilarityRegression(SimilarityClassification):
         self.cuda_available = torch.cuda.is_available()
 
         # Create a ClassificationModel
-        self.model = ClassificationModel(
-            "roberta",
-            "roberta-base",
-        # self.model = ClassificationModel(
-        #     'bert',
-        #     'bert-base-cased',
-            num_labels=1,
-            args=self.model_args,
-            use_cuda=self.cuda_available
-            )
+        if os.path.exists(os.path.join(output_dir, "pytorch_model.bin")):
+            self.model = ClassificationModel(
+                # "roberta",
+                'electra',
+                output_dir,
+                num_labels=1,
+                args=self.model_args,
+                use_cuda=self.cuda_available
+                )
+        else:
+            self.model = ClassificationModel(
+                # "roberta",
+                # "roberta-base",
+                'electra',
+                'google/electra-small-discriminator',
+            # self.model = ClassificationModel(
+            #     'bert',
+            #     'bert-base-cased',
+                num_labels=1,
+                args=self.model_args,
+                use_cuda=self.cuda_available
+                )
