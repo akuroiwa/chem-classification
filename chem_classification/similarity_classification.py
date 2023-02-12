@@ -3,6 +3,9 @@ import pandas as pd
 import logging
 import torch
 
+from rdkit import Chem
+from rdkit.Chem import BRICS
+
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
 transformers_logger.setLevel(logging.WARNING)
@@ -59,8 +62,19 @@ class SimilarityClassification(object):
         result, model_outputs, wrong_predictions = self.model.eval_model(eval_df, verbose=False, silent=True)
 
     def predict_smiles_pair(self, smiles_pair):
+        text_a = smiles_pair[0]
+        text_b = smiles_pair[1]
+
+        target_token = set()
+        target_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(text_a)))
+        target_token_str = ' '.join(target_token)
+
+        smiles_token = set()
+        smiles_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(text_b)))
+        smiles_token_str = ' '.join(smiles_token)
+
         # Make predictions with the model
-        prediction, raw_outputs = self.model.predict([smiles_pair])
+        prediction, raw_outputs = self.model.predict([[target_token_str, smiles_token_str]])
         # print(prediction, raw_outputs)
         return prediction, raw_outputs
 
