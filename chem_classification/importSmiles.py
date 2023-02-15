@@ -22,9 +22,9 @@ def importSmiles(target, smiles_file, regression=False):
     # smiles = open(smiles_file)
     # train_df = pd.DataFrame(columns=["text", "labels"])
 
-    target_token = set()
-    target_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(target)))
-    target_token_str = ' '.join(target_token)
+    target_set = set()
+    target_set.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(target)))
+    target_token = ' '.join(target_set)
     # gen_df = pd.read_csv(smiles_file, index_col=0, usecols=[1, 2])
     # gen_df = pd.read_csv(smiles_file, index_col=0, usecols=[1, 2], names=["smiles", "dice_similarity"])
     gen_df = pd.read_csv(smiles_file, index_col=0)
@@ -40,13 +40,13 @@ def importSmiles(target, smiles_file, regression=False):
             else:
                 l = -1
             labels.append(l)
-    smiles = []
+    smiles_token = []
     for s in gen_df["smiles"]:
-        s_token = set()
-        s_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(s)))
-        s_token_str = ' '.join(s_token)
-        smiles.append(s_token_str)
-    train_df = pd.DataFrame({"text_a": target_token_str, "text_b": smiles, "labels": labels})
+        smiles_set = set()
+        smiles_set.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(s)))
+        s_token = ' '.join(smiles_set)
+        smiles_token.append(s_token)
+    train_df = pd.DataFrame({"text_a": target_token, "text_b": smiles_token, "labels": labels})
     return train_df
 
 def create_json_for_train_and_eval(target, train_smiles="train-smiles", eval_smiles="eval-smiles", regression=False):

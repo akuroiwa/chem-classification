@@ -61,21 +61,29 @@ class SimilarityClassification(object):
         # result, model_outputs, wrong_predictions = self.model.eval_model(eval_df)
         result, model_outputs, wrong_predictions = self.model.eval_model(eval_df, verbose=False, silent=True)
 
-    def predict_smiles_pair(self, smiles_pair):
-        text_a = smiles_pair[0]
-        text_b = smiles_pair[1]
+    def predict_smiles_pair(self, text_a, *text_b):
+        if text_b:
+            target = text_a
 
-        target_token = set()
-        target_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(text_a)))
-        target_token_str = ' '.join(target_token)
+            text_b_list = text_b[0].split(' ')
+            if len(text_b) > 1:
+                text_b_list += list(text_b[1:])
 
-        smiles_token = set()
-        smiles_token.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(text_b)))
-        smiles_token_str = ' '.join(smiles_token)
+        elif text_a is list:
+            target = text_a[0]
+            text_b_list = text_a[1:]
+
+        target_set = set()
+        target_set.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(target)))
+        target_token = ' '.join(target_set)
+
+        smiles_set = set()
+        for smiles in text_b_list:
+            smiles_set.update(BRICS.BRICSDecompose(Chem.MolFromSmiles(smiles)))
+        smiles_token = ' '.join(smiles_set)
 
         # Make predictions with the model
-        prediction, raw_outputs = self.model.predict([[target_token_str, smiles_token_str]])
-        # print(prediction, raw_outputs)
+        prediction, raw_outputs = self.model.predict([[target_token, smiles_token]])
         return prediction, raw_outputs
 
 

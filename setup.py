@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='chem_classification',
-    version='0.0.2',
+    version='0.0.3',
     url='https://github.com/akuroiwa/chem-classification',
     # # PyPI url
     # download_url='',
