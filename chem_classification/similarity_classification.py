@@ -5,6 +5,7 @@ import torch
 
 from rdkit import Chem
 from rdkit.Chem import BRICS
+import os
 
 logging.basicConfig(level=logging.INFO)
 transformers_logger = logging.getLogger("transformers")
@@ -69,7 +70,8 @@ class SimilarityClassification(object):
             if len(text_b) > 1:
                 text_b_list += list(text_b[1:])
 
-        elif text_a is list:
+        elif type(text_a) is list:
+        # else:
             target = text_a[0]
             text_b_list = text_a[1:]
 
