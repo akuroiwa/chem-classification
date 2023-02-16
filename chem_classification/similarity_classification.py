@@ -30,6 +30,7 @@ class SimilarityClassification(object):
         if os.path.exists(os.path.join(output_dir, "pytorch_model.bin")):
             self.model = ClassificationModel(
                 # "roberta",
+                # 'distilbert',
                 'electra',
                 output_dir,
                 num_labels=3,
@@ -40,6 +41,8 @@ class SimilarityClassification(object):
             self.model = ClassificationModel(
                 # "roberta",
                 # "roberta-base",
+                # 'distilbert',
+                # 'distilbert-base-cased',
                 'electra',
                 'google/electra-small-discriminator',
                 # 'google/electra-base-discriminator',
@@ -48,7 +51,8 @@ class SimilarityClassification(object):
             #     'bert-base-cased',
                 num_labels=3,
                 args=self.model_args,
-                use_cuda=self.cuda_available
+                use_cuda=self.cuda_available,
+                ignore_mismatched_sizes=True
             )
 
     def train_and_eval(self, train_json, eval_json):
@@ -65,10 +69,10 @@ class SimilarityClassification(object):
     def predict_smiles_pair(self, text_a, *text_b):
         if text_b:
             target = text_a
-
-            text_b_list = text_b[0].split(' ')
-            if len(text_b) > 1:
-                text_b_list += list(text_b[1:])
+            text_b_list = list(text_b)
+            # text_b_list = text_b[0].split(' ')
+            # if len(text_b) > 1:
+            #     text_b_list += list(text_b[1:])
 
         elif type(text_a) is list:
         # else:
