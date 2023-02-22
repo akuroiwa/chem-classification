@@ -30,7 +30,6 @@ class SimilarityClassification(object):
         if os.path.exists(os.path.join(output_dir, "pytorch_model.bin")):
             self.model = ClassificationModel(
                 # "roberta",
-                # 'distilbert',
                 'electra',
                 output_dir,
                 num_labels=3,
@@ -41,18 +40,13 @@ class SimilarityClassification(object):
             self.model = ClassificationModel(
                 # "roberta",
                 # "roberta-base",
-                # 'distilbert',
-                # 'distilbert-base-cased',
                 'electra',
                 'google/electra-small-discriminator',
                 # 'google/electra-base-discriminator',
-            # self.model = ClassificationModel(
-            #     'bert',
-            #     'bert-base-cased',
                 num_labels=3,
                 args=self.model_args,
-                use_cuda=self.cuda_available,
-                ignore_mismatched_sizes=True
+                use_cuda=self.cuda_available
+                # ignore_mismatched_sizes=True
             )
 
     def train_and_eval(self, train_json, eval_json):
@@ -125,9 +119,6 @@ class SimilarityRegression(SimilarityClassification):
                 # "roberta-base",
                 'electra',
                 'google/electra-small-discriminator',
-            # self.model = ClassificationModel(
-            #     'bert',
-            #     'bert-base-cased',
                 num_labels=1,
                 args=self.model_args,
                 use_cuda=self.cuda_available
