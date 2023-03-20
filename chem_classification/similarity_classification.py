@@ -34,7 +34,8 @@ class SimilarityClassification(object):
                 output_dir,
                 num_labels=3,
                 args=self.model_args,
-                use_cuda=self.cuda_available
+                use_cuda=self.cuda_available,
+                from_tf=True
             )
         else:
             self.model = ClassificationModel(
@@ -45,8 +46,9 @@ class SimilarityClassification(object):
                 # 'google/electra-base-discriminator',
                 num_labels=3,
                 args=self.model_args,
-                use_cuda=self.cuda_available
+                use_cuda=self.cuda_available,
                 # ignore_mismatched_sizes=True
+                from_tf=True
             )
 
     def train_and_eval(self, train_json, eval_json):
@@ -111,7 +113,8 @@ class SimilarityRegression(SimilarityClassification):
                 output_dir,
                 num_labels=1,
                 args=self.model_args,
-                use_cuda=self.cuda_available
+                use_cuda=self.cuda_available,
+                from_tf=True
                 )
         else:
             self.model = ClassificationModel(
@@ -121,5 +124,6 @@ class SimilarityRegression(SimilarityClassification):
                 'google/electra-small-discriminator',
                 num_labels=1,
                 args=self.model_args,
-                use_cuda=self.cuda_available
+                use_cuda=self.cuda_available,
+                from_tf=True
                 )
