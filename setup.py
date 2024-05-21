@@ -40,7 +40,7 @@ setup(
     keywords=['classification', 'transformer', 'roberta', 'cheminformatics', 'chemoinformatics'],
     packages=find_packages(),
     include_package_data=True,
-    install_requires=['rdkit-pypi', 'simpletransformers', 'pandas'],
+    install_requires=['rdkit', 'simpletransformers', 'pandas'],
     entry_points={
         'console_scripts': [
             'importSmiles = chem_classification.importSmiles:console_script'
